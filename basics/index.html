@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+        }
+    </style>    
+</head>
+<body>
+    <h1>Vue Basicals</h1>
+    <div id="appcontainer">
+        Hola {{nombre}} en el año {{year}}
+        <br/>
+        <button type="button" v-on:click="stopInterval">Detener</button>
+        <button type="button" v-on:click="startInterval">Arrancar</button>
+        <br />
+        <!-- Podemos guardar valores del atributo en el elemento: title, moredata -->
+        <label v-bind:title="caption" v-bind:moredata="pathImg">Hola Mundo</label>
+        <br />
+        Segundos: {{contador}}
+        <br/>
+        <img v-bind:src="pathImg" height="125"><button type="button" v-on:click="cambiarImagen">Cambia imagen</button>
+        <br/>
+        <input type="text" v-model="nombre">
+        <select v-model="frutaSelected">
+            <option value="Manzana">🍎 Manzana</option>
+            <option value="Pera">🍐 Pera</option>
+            <option value="Sandía">🍉 Sandía </option>
+            <option>🍇 Uvas </option> <!-- Si no hay value asignado, el valor es el propio texto de la opción -->
+        </select>
+        Fruta seleccionada {{frutaSelected}}
+        <hr/>
+        <h3>Bucles</h3>
+        <ul>
+            <li v-for="vehiculo in vehiculos" v-bind:key="vehiculo" >{{vehiculo}}</li>
+        </ul>
+        <ul>
+            <li v-for="comida in comidas" v-bind:key="vehiculo" >{{comida.nombre}}</li>
+        </ul>
+        <select v-model="defaultComida">
+            <option v-for="comida in comidas" v-bind:value="comida.id" >{{comida.nombre}}</option>
+        </select>
+        <ul>
+            <li v-for="(bebida,index) in bebidas" v-bind:value="bebida.id" >Índice: {{index}} - {{bebida.nombre}}</li>
+        </ul>
+        <hr/>
+
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        //data, methods, props, events{mounted, created, computed, watch}
+        const app ={
+            data(){
+                return{
+                    nombre: 'Esteban',
+                    year: 2022,
+                    contador: 0,
+                    interval: null,
+                    isRunning: false,
+                    caption: "El título ha cambiado",
+                    pathImg: "https://media.gettyimages.com/photos/aerial-view-on-red-car-on-the-road-near-tea-plantation-picture-id641294046",
+                    frutaSelected:'',
+                    vehiculos :['🚙 Coche', '🚚 Camión', '🚟 Teleférico', '✈️ Avión', '🚂 Locomotora' ],
+                    comidas:[
+                        {
+                            id: 1,
+                            nombre:'🍔 Hamburguesa'
+                        },
+                        {
+                            id: 2,
+                            nombre:'🍕 Pizza'
+                        },
+                        {
+                            id: 3,
+                            nombre:'🍗 Pollo'
+                        },
+                        {
+                            id: 4,
+                            nombre:'🍣 Sushi'
+                        }
+                    ],
+                    defaultComida: 2,    //La que se eleige por defecto, al renderozar el componente select
+                    bebidas: [
+                        {
+                            id: 1,
+                            nombre:'🍺 Cerveza'
+                        },
+                        {
+                            id: 2,
+                            nombre:'🍷 Vino'
+                        },
+                        {
+                            id: 3,
+                            nombre:'🥛 Leche'
+                        },
+                    ],
+                } 
+            },
+            // Esto se ejecuta una vez montada la App
+            mounted() {
+                //this.startInterval();
+            },
+            methods: {
+                stopInterval(){
+                    if (this.isRunning){
+                        console.log("Stop 🛑");
+                        clearInterval(this.interval);
+                        this.isRunning=false;
+                    } else{
+                        console.log("Arrancar 🚀");
+                        this.startInterval();
+                    }
+               },
+               startInterval() {
+                    this.interval = setInterval(()=>{
+                        this.contador ++;
+                    },1000);
+                    this.isRunning=true;
+
+                },
+                cambiarImagen(){
+                    this.pathImg="https://media.gettyimages.com/photos/cars-on-a-parking-picture-id1285180944"
+                }
+            }
+        }
+
+        var mountedApp = Vue.createApp(app).mount('#appcontainer');
+
+
+    </script>
+
+
+
+
+</body>
+</html>
