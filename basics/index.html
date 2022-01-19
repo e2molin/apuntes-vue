@@ -8,29 +8,34 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+             
     <style>
         :root {
             font-family: 'Open Sans', sans-serif;
             font-size: 16px;
+            padding: 15px;
         }
     </style>    
 </head>
 <body>
     <h1>Vue Basicals</h1>
     <div id="appcontainer">
-        Hola {{nombre}} en el año {{year}}
-        <br/>
+        <h3>Entendiendo el concepto de reactividad</h3>
+        <input type="text" v-model="nombre"> Hola {{nombre}} en el año {{year}}
+        <h3>Definición de funciones</h3>
         <button type="button" v-on:click="stopInterval">Detener</button>
         <button type="button" v-on:click="startInterval">Arrancar</button>
-        <br />
-        <!-- Podemos guardar valores del atributo en el elemento: title, moredata -->
-        <label v-bind:title="caption" v-bind:moredata="pathImg">Hola Mundo</label>
-        <br />
         Segundos: {{contador}}
-        <br/>
+        <h3>Conectando valores de atributos con v-bind</h3>
+        <p>Podemos guardar valores del atributo en el elemento: title, moredata</p>
+        <label v-bind:title="caption" v-bind:moredata="pathImg">Hola Mundo</label>
+        <h3>Modificando valores de atributos</h3>
         <img v-bind:src="pathImg" height="125"><button type="button" v-on:click="cambiarImagen">Cambia imagen</button>
         <br/>
-        <input type="text" v-model="nombre">
+        <h3>Usuario modificando valores del modelo de datos</h3>
         <select v-model="frutaSelected">
             <option value="Manzana">🍎 Manzana</option>
             <option value="Pera">🍐 Pera</option>
@@ -40,12 +45,15 @@
         Fruta seleccionada {{frutaSelected}}
         <hr/>
         <h3>Bucles</h3>
+        <h4>Iteración en array rellenando lista</h4>
         <ul>
             <li v-for="vehiculo in vehiculos" v-bind:key="vehiculo" >{{vehiculo}}</li>
         </ul>
+        <h4>Iteración en array de objetos rellenando lista</h4>
         <ul>
-            <li v-for="comida in comidas" v-bind:key="vehiculo" >{{comida.nombre}}</li>
+            <li v-for="comida in comidas" v-bind:key="comida.id" >{{comida.nombre}}</li>
         </ul>
+        <h4>Iteración en array rellenando lista desplegada</h4>
         <select v-model="defaultComida">
             <option v-for="comida in comidas" v-bind:value="comida.id" >{{comida.nombre}}</option>
         </select>
@@ -53,8 +61,45 @@
             <li v-for="(bebida,index) in bebidas" v-bind:value="bebida.id" >Índice: {{index}} - {{bebida.nombre}}</li>
         </ul>
         <hr/>
+        <h4>Iteración de Array into Array</h4>
+        <ul class="collection">
+            <li class="collection-item" v-for="pelicula in peliculas" v-bind:value="pelicula.idfilm" >
+                {{pelicula.titulo}}
+                <ul class="collection">
+                    <li class="collection-item" v-for="planeta in pelicula.planetas" v-bind:value="pelicula.idplaneta" >{{planeta.nombreplan}}</li>
+                </ul>
+            </li>
+        </ul>
+        <hr/>
+        <h3>Solicitandos datos a una API</h3>
+        {{usuarios[0]}}
+        <hr/>
+        <h3>Carga elementos en tabla</h3>
+        <table class="table stripped bordered">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>House</th>
+                    <th>Patronus</th>
+                    <th>Varita</th>
+                    <th>foto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(usuario,index) in usuarios" v-bind:id="index">
+                    <td>{{usuario.name}}</td>
+                    <td>{{usuario.house}}</td>
+                    <td>{{usuario.patronus}}</td>
+                    <td>{{usuario.wand.clore}}</td>
+                    <td><img v-bind:src="usuario.image" height="125"></td>
+                </tr>
+            </tbody>
+        </table>
 
     </div>
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://unpkg.com/vue@next"></script>
     <script>
         //data, methods, props, events{mounted, created, computed, watch}
@@ -103,11 +148,52 @@
                             nombre:'🥛 Leche'
                         },
                     ],
-                } 
+                    peliculas: [
+                        {
+                            idfilm: 1,
+                            titulo: 'Star Wars',
+                            planetas: [
+                                {
+                                    idplan: 1,
+                                    nombreplan: 'Alderaan'
+                                },
+                                {
+                                    idplan: 2,
+                                    nombreplan: 'Tatooine'
+                                },
+                                {
+                                    idplan: 3,
+                                    nombreplan: 'Yavin'
+                                },
+                            ]
+                        },
+                        {
+                            idfilm: 2,
+                            titulo: 'Imperio Contraataca',
+                            planetas: [
+                                {
+                                    idplan: 4,
+                                    nombreplan: 'Hoth'
+                                },
+                                {
+                                    idplan: 5,
+                                    nombreplan: 'Dagobah'
+                                },
+                            ]
+                        },
+                        {
+                            idfilm: 3,
+                            titulo: 'Retorno del Jedi',
+                            planetas: null,
+                        }
+                    ],
+                    usuarios: [],
+                }
             },
             // Esto se ejecuta una vez montada la App
             mounted() {
                 //this.startInterval();
+                this.getUsuarios();
             },
             methods: {
                 stopInterval(){
@@ -129,6 +215,13 @@
                 },
                 cambiarImagen(){
                     this.pathImg="https://media.gettyimages.com/photos/cars-on-a-parking-picture-id1285180944"
+                },
+                getUsuarios() {
+                    fetch('http://hp-api.herokuapp.com/api/characters')
+                        .then(response => response.json())
+                        .then(datajson => {
+                            this.usuarios = datajson;
+                        })
                 }
             }
         }
