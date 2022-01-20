@@ -9,7 +9,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
 
              
     <style>
@@ -21,21 +22,27 @@
     </style>    
 </head>
 <body>
-    <h1>Vue Basicals</h1>
+    <h1 class="title is-1">Vue Basicals</h1>
     <div id="appcontainer">
-        <h3>Entendiendo el concepto de reactividad</h3>
+        <h3 class="title is-3"></h3>Entendiendo el concepto de reactividad</h3>
         <input type="text" v-model="nombre"> Hola {{nombre}} en el año {{year}}
-        <h3>Definición de funciones</h3>
-        <button type="button" v-on:click="stopInterval">Detener</button>
-        <button type="button" v-on:click="startInterval">Arrancar</button>
+        <h3 class="title is-3">Definición de funciones</h3>
+        <button class="button is-danger m-1" type="button" v-on:click="stopInterval">Detener</button>
+        <button class="button is-primary m-1"type="button" v-on:click="startInterval">Arrancar</button>
         Segundos: {{contador}}
-        <h3>Conectando valores de atributos con v-bind</h3>
+
+<!---->
+
+        <h3 class="title is-3">Conectando valores de atributos con v-bind</h3>
         <p>Podemos guardar valores del atributo en el elemento: title, moredata</p>
         <label v-bind:title="caption" v-bind:moredata="pathImg">Hola Mundo</label>
-        <h3>Modificando valores de atributos</h3>
+        <h3 class="title is-3">Modificando valores de atributos</h3>
         <img v-bind:src="pathImg" height="125"><button type="button" v-on:click="cambiarImagen">Cambia imagen</button>
         <br/>
-        <h3>Usuario modificando valores del modelo de datos</h3>
+
+<!---->
+
+        <h3 class="title is-3">Usuario modificando valores del modelo de datos</h3>
         <select v-model="frutaSelected">
             <option value="Manzana">🍎 Manzana</option>
             <option value="Pera">🍐 Pera</option>
@@ -44,62 +51,128 @@
         </select>
         Fruta seleccionada {{frutaSelected}}
         <hr/>
-        <h3>Bucles</h3>
-        <h4>Iteración en array rellenando lista</h4>
-        <ul>
-            <li v-for="vehiculo in vehiculos" v-bind:key="vehiculo" >{{vehiculo}}</li>
-        </ul>
-        <h4>Iteración en array de objetos rellenando lista</h4>
-        <ul>
-            <li v-for="comida in comidas" v-bind:key="comida.id" >{{comida.nombre}}</li>
-        </ul>
-        <h4>Iteración en array rellenando lista desplegada</h4>
-        <select v-model="defaultComida">
-            <option v-for="comida in comidas" v-bind:value="comida.id" >{{comida.nombre}}</option>
+
+<!---->
+
+        <h3 class="title is-3">Bucles</h3>
+        <h4 class="title is-4">Iteración en array rellenando lista</h4>
+        <div class="content">
+            <ul>
+                <li v-for="vehiculo in vehiculos" v-bind:key="vehiculo" >{{vehiculo}}</li>
+            </ul>
+        </div>
+
+<!---->
+
+        <h4 class="title is-4">Iteración en array de objetos rellenando lista</h4>
+        <div class="content">
+            <ul>
+                <li v-for="comida in comidas" v-bind:key="comida.id" >{{comida.nombre}}</li>
+            </ul>
+        </div>
+
+<!---->
+
+        <h4 class="title is-4">Iteración en array rellenando lista desplegada</h4>
+        <div class="content">
+            <select v-model="defaultComida">
+                <option v-for="comida in comidas" v-bind:value="comida.id" >{{comida.nombre}}</option>
+            </select>
+            <ul>
+                <li v-for="(bebida,index) in bebidas" v-bind:value="bebida.id" >Índice: {{index}} - {{bebida.nombre}}</li>
+            </ul>
+        </div>
+        <hr/>
+
+<!---->
+
+        <h4 class="title is-4">Iteración de Array into Array</h4>
+        <div class="content">
+            <ul class="collection">
+                <li class="collection-item" v-for="pelicula in peliculas" v-bind:value="pelicula.idfilm" >
+                    {{pelicula.titulo}}
+                    <ul class="collection">
+                        <li class="collection-item" v-for="planeta in pelicula.planetas" v-bind:value="pelicula.idplaneta" >{{planeta.nombreplan}}</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <hr/>
+
+<!---->
+
+        <h3 class="title is-3">Solicitandos datos a una API</h3>
+        <div class="box">
+            {{usuarios[0]}}
+        </div>
+        <hr/>
+
+<!---->
+
+        <h3 class="title is-3">Carga elementos en tabla</h3>
+        <div class="container">
+            <table class="table is-bordered is-striped">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>House</th>
+                        <th>Patronus</th>
+                        <th>Varita</th>
+                        <th>foto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(usuario,index) in usuarios_con_varita" v-bind:id="index">
+                        <td>{{usuario.name}}</td>
+                        <td>{{usuario.house}}</td>
+                        <td>{{usuario.patronus}}</td>
+                        <td>{{usuario.wand.core}}</td>
+                        <td>
+                            <figure class="image is-64x64 is-2by3">
+                                <img class="is-rounded" v-bind:src="usuario.image">
+                            </figure>
+                        </td>
+                        <td>
+                            <span class="tag is-info" v-if="(usuario.hogwartsStudent===true)">Estudiante</span>
+                            <span class="tag is-info" v-else>No estudiante</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr/>
+
+<!---->
+
+        <h3 class="title is-3">Trabajando con eventos</h3>
+        <button class="button is-info m-1" @click="(contador++)">Haz clic</button>
+        <button class="button is-info m-1" @mouseover="(contador++)">Pon el cursor sobre mí</button>
+        <button class="button is-info m-1" @mouseout="(contador++)">Pon el cursor sobre mí y despúes quítalo</button>
+        <span class="tag is-info">{{contador}}</span>
+
+<!---->
+
+        <h4 class="title is-4">Mostrando elementos condicionalmente</h4>
+        <button class="btn indigo darken-2" @click="(displayIMG=true)">Haz clic para mostrar imagen.</button>
+        <select v-on:change="alternarImagen($event)">
+            <option value="laptop">💻 Laptop</option>
+            <option value="rainbow">🌈 Rainbow</option>
         </select>
-        <ul>
-            <li v-for="(bebida,index) in bebidas" v-bind:value="bebida.id" >Índice: {{index}} - {{bebida.nombre}}</li>
-        </ul>
         <hr/>
-        <h4>Iteración de Array into Array</h4>
-        <ul class="collection">
-            <li class="collection-item" v-for="pelicula in peliculas" v-bind:value="pelicula.idfilm" >
-                {{pelicula.titulo}}
-                <ul class="collection">
-                    <li class="collection-item" v-for="planeta in pelicula.planetas" v-bind:value="pelicula.idplaneta" >{{planeta.nombreplan}}</li>
-                </ul>
-            </li>
-        </ul>
+        <img class="circle responsive-img" v-bind:src="pathImagenDisplay" v-show="displayIMG">
+    
         <hr/>
-        <h3>Solicitandos datos a una API</h3>
-        {{usuarios[0]}}
-        <hr/>
-        <h3>Carga elementos en tabla</h3>
-        <table class="table stripped bordered">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>House</th>
-                    <th>Patronus</th>
-                    <th>Varita</th>
-                    <th>foto</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(usuario,index) in usuarios" v-bind:id="index">
-                    <td>{{usuario.name}}</td>
-                    <td>{{usuario.house}}</td>
-                    <td>{{usuario.patronus}}</td>
-                    <td>{{usuario.wand.clore}}</td>
-                    <td><img v-bind:src="usuario.image" height="125"></td>
-                </tr>
-            </tbody>
-        </table>
+        <!--
+            De esta manera podemos ver el contenido de $data
+            <pre>{{$data}}</pre>
+        -->
+        
+
 
     </div>
 
     <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>-->
     <script src="https://unpkg.com/vue@next"></script>
     <script>
         //data, methods, props, events{mounted, created, computed, watch}
@@ -111,6 +184,8 @@
                     contador: 0,
                     interval: null,
                     isRunning: false,
+                    displayIMG: false,
+                    pathImagenDisplay:"https://images.unsplash.com/photo-1593642532454-e138e28a63f4?w=600",
                     caption: "El título ha cambiado",
                     pathImg: "https://media.gettyimages.com/photos/aerial-view-on-red-car-on-the-road-near-tea-plantation-picture-id641294046",
                     frutaSelected:'',
@@ -188,6 +263,7 @@
                         }
                     ],
                     usuarios: [],
+                    usuarios_con_varita:[],
                 }
             },
             // Esto se ejecuta una vez montada la App
@@ -211,17 +287,27 @@
                         this.contador ++;
                     },1000);
                     this.isRunning=true;
-
+                    console.log("Arrancar 🚀");
                 },
                 cambiarImagen(){
                     this.pathImg="https://media.gettyimages.com/photos/cars-on-a-parking-picture-id1285180944"
                 },
                 getUsuarios() {
-                    fetch('http://hp-api.herokuapp.com/api/characters')
+                    fetch('http://hp-api.herokuapp.com/api/characters/house/gryffindor')
                         .then(response => response.json())
                         .then(datajson => {
                             this.usuarios = datajson;
+                            this.usuarios_con_varita = datajson.filter(x=>x.wand.core!=="");
                         })
+                },
+                alternarImagen(event){
+                    console.log(event);
+                    if (event.target.value==="laptop"){
+                        this.pathImagenDisplay="https://images.unsplash.com/photo-1593642532454-e138e28a63f4?w=600";//Laptop
+                    }else{
+                        this.pathImagenDisplay="https://images.unsplash.com/photo-1642607806998-6123a2d3065f?w=600";//Rainbow
+                    }
+
                 }
             }
         }
