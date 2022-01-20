@@ -19,6 +19,16 @@
             font-size: 16px;
             padding: 15px;
         }
+        .redondo {
+            border-radius: 20px;
+            padding: 10px;
+            width: 150px;
+        } 
+        .cuadrado {
+            padding: 10px;
+            width: 150px;
+        } 
+
     </style>    
 </head>
 <body>
@@ -162,11 +172,38 @@
         <img class="circle responsive-img" v-bind:src="pathImagenDisplay" v-show="displayIMG">
     
         <hr/>
-        <!--
-            De esta manera podemos ver el contenido de $data
-            <pre>{{$data}}</pre>
-        -->
+<!--
+    De esta manera podemos ver el contenido de $data
+    <pre>{{$data}}</pre>
+-->
+
+<!---->
+        <h4 class="title is-4">Enlazando clases con v.bind</h4>
+        <div class="cuadrado has-background-primary" v-bind:class="{redondo}">
+            Contenedor
+        </div>
+        <button @click="(redondo = !redondo)">Cambiar</button>
+        <hr/>
+
+<!---->
+
+        <h4 class="title is-4">Propiedades computadas</h4>
+        <div class="card">
+            <div class="card-content">
+                <input type="text" v-model="sumandoA">
+            </div>
+            <div class="card-content">
+                <input type="text" v-model="sumandoB">
+            </div>
+            <div class="card-content">
+                <span class="tag is-info">El resultado de la suma es {{resultadoSuma}}</span>
+            </div>
+        </div>
         
+        
+        
+
+
 
 
     </div>
@@ -185,6 +222,9 @@
                     interval: null,
                     isRunning: false,
                     displayIMG: false,
+                    redondo: false,
+                    sumandoA:0,
+                    sumandoB:0,
                     pathImagenDisplay:"https://images.unsplash.com/photo-1593642532454-e138e28a63f4?w=600",
                     caption: "El título ha cambiado",
                     pathImg: "https://media.gettyimages.com/photos/aerial-view-on-red-car-on-the-road-near-tea-plantation-picture-id641294046",
@@ -264,6 +304,11 @@
                     ],
                     usuarios: [],
                     usuarios_con_varita:[],
+                }
+            },
+            computed:{
+                resultadoSuma: function(){
+                    return parseFloat(this.sumandoA) + parseFloat(this.sumandoB)
                 }
             },
             // Esto se ejecuta una vez montada la App

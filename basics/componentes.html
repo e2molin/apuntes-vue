@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300&family=Open+Sans&family=Roboto&display=swap" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+
+             
+    <style>
+        :root {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>     
+</head>
+<body>
+<div id="appcontainer">
+    <h1>{{theme}}</h1>
+    <hello-world/>
+</div>
+
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+    //data, methods, props, events{mounted, created, computed, watch}
+    const app = {
+        data() {
+            return {
+                theme: "LifeCycle",
+
+            }
+        },//-> End Data
+        beforeCreate() {
+            //Los datos aún no existen
+            console.log(document.querySelector("#appcontainer").innerHTML);
+            console.log(`beforeCreate -> Antes de ser creado. Variable theme=${this.theme}`);
+        },
+        created() {
+            console.log(document.querySelector("#appcontainer").innerHTML);
+            console.log(`created -> App creada. Variable theme=${this.theme}`);
+        },
+        beforeMount() {
+            console.log(document.querySelector("#appcontainer").innerHTML);
+            console.log(`beforeMount -> Antes de ser montado. Variable theme=${this.theme}`);
+        },
+        mounted() {
+            // Ya existen las etiquetas HTML porque ya está renderizado
+            console.log(document.querySelector("#appcontainer").innerHTML);
+            console.log(`mounted -> App Montada. Variable theme=${this.theme}`);
+        },
+        beforeUpdate() {
+            // Sucede antes de actualizar nuestro DOM
+            console.log(`beforeUpdate -> Antes de ser actualizada. Variable theme=${this.theme}`);
+        },
+        updated() {
+            // El DOM ha sido actualizado
+            console.log(`updated -> App Actualizada. Variable theme=${this.theme}`);
+        },
+        beforeUnmount() {
+            console.log(document.querySelector("#appcontainer").innerHTML);
+            console.log(`beforeUnmount -> La App va a desmontarse. Variable theme=${this.theme}`);
+        },
+        unmounted() {
+            // Aquí ya no puedo leer las etiquetas
+            //console.log(document.querySelector("#appcontainer").innerHTML); output-> error
+            console.log(`unmounted -> App desmontada. Variable theme=${this.theme}`);
+        },
+    }//-> End App
+
+    // También se puede hacer en una fase
+    //var mountedApp = Vue.createApp(app).mount('#appcontainer');
+    var _app = Vue.createApp(app);
+    _app.component("hello-world",{
+        template:`<h4 class="title is-4">Buenos días {{nombre}}</h4>`,
+        data() {
+            return {
+                nombre: "Esteban",
+
+            }
+        },//-> End Data
+    });
+    var mountedApp = _app.mount('#appcontainer');
+    
+
+
+
+
+</script>
+</body>
+</html>
